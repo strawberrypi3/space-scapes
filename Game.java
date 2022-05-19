@@ -15,7 +15,7 @@ public class Game {
       frankensteinMoveset[0] = new Move(0, -50, 1.0, 0.0, "Smack");
       
       Entity player = new Entity("Me", 200, 50, moveset);
-      Entity enemy = new Entity("Frankenstein", 100, 40, frankensteinMoveset);
+      Entity enemy = new Entity("Frankenstein", 100, 40, moveset);
       
       Battle fight1 = new Battle(player, enemy);
       fight1.doBattle(console);

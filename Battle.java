@@ -122,7 +122,8 @@ public class Battle extends JFrame {
    }
    
    public class GamePanel extends JPanel {
-      private Image image;
+      private Image board;
+      private Image status;
       
       public GamePanel() {
          imagePanel();
@@ -130,9 +131,10 @@ public class Battle extends JFrame {
       
       public void imagePanel() {
          try {
-            image = ImageIO.read(new File("BattleUIPanel.png"));
+            board = ImageIO.read(new File("assets/BattleUIPanel.png"));
+            status = ImageIO.read(new File("assets/status" + player.getStatus() + ".png"));
          } catch (IOException ex){
-            System.out.println("nope");
+            System.out.println("Error: Image file not found");
             return;
          }
       }
@@ -142,9 +144,14 @@ public class Battle extends JFrame {
          
          g.clearRect(0, 0, getWidth(), getHeight());
          
-         // What looks like a "pixel" is actually about 5 x 5 pixels
-         image = image.getScaledInstance(640, 640, Image.SCALE_DEFAULT);
-         g.drawImage(image, 0, 0, this);
+         imagePanel();
+         
+         // Board is scaled up by 5
+         board = board.getScaledInstance(640, 640, Image.SCALE_DEFAULT);
+         g.drawImage(board, 0, 0, this);
+         
+         status = status.getScaledInstance(48, 48, Image.SCALE_DEFAULT);
+         g.drawImage(status, 558, 13, this);
          
          // Draw red section of health bar:
          double percentHealth = (double) player.getHealth() / player.getMaxHealth();

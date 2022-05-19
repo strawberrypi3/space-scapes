@@ -78,8 +78,7 @@ public class Entity {
          return "confused";
       } else if (status == 3) {
          return "tired";
-      } else {
-         return "";
       }
+      return "";
    }
 }
