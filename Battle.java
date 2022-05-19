@@ -14,9 +14,8 @@ import java.io.IOException;
 
 
 public class Battle extends JFrame {
-   public static final int HB_LENGTH = 150; // Length of health bar
-   public static final int HB_WIDTH = 30; // Width of health bar
-   public static final int HB_BORDER = 3; // Thickness of health bar black border
+   public static final int HB_LENGTH = 53; // Length in percieved (scaled) pixels of health bar
+   public static final int HB_WIDTH = 3; // Width in percieved (scaled) pixels of health bar
    
    private Entity player;
    private Entity enemy;
@@ -143,21 +142,15 @@ public class Battle extends JFrame {
          
          g.clearRect(0, 0, getWidth(), getHeight());
          
+         // What looks like a "pixel" is actually about 5 x 5 pixels
          image = image.getScaledInstance(640, 640, Image.SCALE_DEFAULT);
          g.drawImage(image, 0, 0, this);
-         
-         // Draw health bar:
-         g.setColor(Color.BLACK);
-         g.fillRect(10, 10, HB_LENGTH, HB_WIDTH); // Outline
-         g.setColor(Color.GREEN);
-         g.fillRect(10 + HB_BORDER, 10 + HB_BORDER, HB_LENGTH - 2*HB_BORDER, HB_WIDTH - 2*HB_BORDER); // Inside bar
          
          // Draw red section of health bar:
          double percentHealth = (double) player.getHealth() / player.getMaxHealth();
          int pixelsRed = HB_LENGTH - (int)(HB_LENGTH * percentHealth);
          g.setColor(Color.RED);
-         g.fillRect(10 + HB_BORDER, 10 + HB_BORDER, pixelsRed - 2*HB_BORDER, HB_WIDTH - 2*HB_BORDER);
-         
+         g.fillRect(80, 30, pixelsRed*5, HB_WIDTH*5);
          repaint();
       }
    }
