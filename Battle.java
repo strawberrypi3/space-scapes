@@ -4,8 +4,8 @@
   */
 import java.util.*;
 import java.lang.*;
-import java.awt.*;
 import javax.swing.*;
+import java.awt.*;
 import java.net.URL;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;

@@ -30,16 +30,27 @@ public class Entity {
    public void setStatus(int s) {
       if (status == s) { // no change
          return;
+      } else {
+         // Undo previous status effect:
+         if (status == 2) { // confusion undo
+            for (int i = 0; i < moveset.length; i++) {
+               moveset[i].setProbability(moveset[i].getProbability() * 1.42);
+               moveset[i].setStatusProbability(moveset[i].getStatusProbability() * 1.42);
+            }
+         } else if (status == 3) { // poison undo
+            speed *= 2;
+         }
       }
+      
       status = s;
       
       // Poison (status == 1) is handled by the Battle class
-      if (status == 2) {
+      if (status == 2) { // apply confusion
          for (int i = 0; i < moveset.length; i++) {
             moveset[i].setProbability(moveset[i].getProbability() * 0.7);
             moveset[i].setStatusProbability(moveset[i].getStatusProbability() * 0.7);
          }
-      } else if (status == 3) {
+      } else if (status == 3) { // apply poison
          speed /= 2;
       }
    }

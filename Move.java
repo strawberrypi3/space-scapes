@@ -1,7 +1,7 @@
 /**
   * Represents a single move that can be taken by a character. A move can result in
   * stat changes (such as deducting the target's HP) and has certain probabilities 
-  * of successfully occuring.
+  * of successfully occuring. A move can also make a target change its status.
   */
 
 public class Move {
@@ -11,6 +11,13 @@ public class Move {
    private double statusProbability; // Same as probability, but with status effect occuring
    private String name;
    
+   /**
+     * @param se the move's status effect
+     * @param s  the move's strength (negative for attack, positive for cure)
+     * @param p  the move's probability (0.0 to 1.0) of dealing damage/cure as per s
+     * @param sp the move's probability (0.0 to 1.0) of dealing status effect as per se
+     * @param n  the name of the move
+     */
    public Move(int se, int s, double p, double sp, String n) {
       statusEffect = se;
       strength = s;
@@ -39,9 +46,11 @@ public class Move {
       return statusProbability;
    }
    
-   // Returns an attack in the form of an array
-   //   return a two element array, first element represents strength,
-   //          second element represents status effect
+   /**
+     * Gives an attack's result in the form of an array, accounting for probability
+     * @return a two element array where first element represents strength,
+               second element represents status effect
+    */
    public int[] deal() {
       int[] attack = new int[2];
       if (probability > Math.random()) {
