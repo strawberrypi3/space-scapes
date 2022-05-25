@@ -17,7 +17,11 @@ public class Game {
       Entity player = new Entity("Me", 200, 50, moveset);
       Entity enemy = new Entity("Frankenstein", 100, 40, moveset);
       
-      Battle fight1 = new Battle(player, enemy);
-      fight1.doBattle(console);
+      
+      GameWindow window = new GameWindow(player);
+      
+      window.write("Hello worl- I mean, Game Window! I am trapped inside the screen.");
+
+      window.doBattle(enemy, console);
    }
 }

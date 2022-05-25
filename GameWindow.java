@@ -2,10 +2,12 @@
   * Handles the turns and stat changes of a battle between the player
   * and a single enemy
   */
-import java.util.*;
+import java.util.Scanner;
 import java.lang.*;
 import javax.swing.*;
+import javax.swing.border.*; // border for textbox
 import java.awt.*;
+import java.awt.event.*; // to respond to clicks
 import java.net.URL;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -13,29 +15,32 @@ import java.io.File;
 import java.io.IOException;
 
 
-public class Battle extends JFrame {
+public class GameWindow extends JFrame {
    public static final int HB_LENGTH = 53; // Length in percieved (scaled) pixels of health bar
    public static final int HB_WIDTH = 3; // Width in percieved (scaled) pixels of health bar
    
    private Entity player;
    private Entity enemy;
    private JFrame frame;
-   private JPanel panel;
+   private JFrame textFrame;
+   private TextPanel textPanel;
    
-   public Battle(Entity p, Entity e) {
+   public GameWindow(Entity p) {
+      this.getContentPane().setLayout(null);
+      
+      textFrame = new JFrame("Text Screen");
+      textFrame.setSize(654, 478-25);
+      textFrame.setVisible(true);
+      textPanel = new TextPanel("");
+      textFrame.add(textPanel);
+      textFrame.validate();
+      textFrame.repaint();
+      
       player = p;
-      enemy = e;
    }
    
-   public boolean doBattle(Scanner console) {
-      // temporary UI, will integrate with Textbox and Game
-      frame = new JFrame("Battle Screen");
-      frame.setSize(640, 640);
-      frame.setVisible(true);
-      GamePanel panel = new GamePanel();
-      frame.add(panel);
-      frame.validate();
-      frame.repaint();
+   public boolean doBattle(Entity e, Scanner console) {
+      enemy = e;
       
       int turn;
       if (player.getSpeed() < enemy.getSpeed()) {
@@ -69,6 +74,11 @@ public class Battle extends JFrame {
          System.out.println("You lost - GAME OVER");
          return false;
       }
+   }
+   
+   public void write(String message) {
+      textPanel.typewriter(message);
+      System.out.println("CHECK");
    }
    
    public int[] playerTurn(Scanner console) {
@@ -121,14 +131,41 @@ public class Battle extends JFrame {
       System.out.println();
    }
    
-   public class GamePanel extends JPanel {
+   public class TextPanel extends javax.swing.JPanel {
+      private String characterName;
+      private int index = 0;
+      private javax.swing.Timer timer;
+      private javax.swing.JButton jButton1;
+      private javax.swing.JLabel label;
       private Image board;
       private Image status;
       
-      public GamePanel() {
-         imagePanel();
-      }
+       public TextPanel(String charaName) {
+           characterName = charaName;
+           setLayout(new BorderLayout(5,5));
+          // jButton1 = new javax.swing.JButton();
+          // jButton1.setText("Press to proceed");
+          // jButton1.addActionListener(evt -> jButton1ActionPerformed(evt)); // lambda expression (->): a short way of method writing
+           label = new javax.swing.JLabel();
+           label.setFont(new Font("Arial", Font.BOLD, 15));
+           add(label, BorderLayout.PAGE_END);
+          // add(jButton1, BorderLayout.NORTH);
+           setPreferredSize(new Dimension(650, 300));
+   
+           Border bevel = BorderFactory.createRaisedBevelBorder();
+           Border title = BorderFactory.createTitledBorder(characterName.toUpperCase());
+           Border matte = BorderFactory.createMatteBorder(15, 15, 15, 15, new Color(0, 0, 0, 0));
+           Border padding = BorderFactory.createEmptyBorder(3, 10, 7, 10);
+           Border compound1 = BorderFactory.createCompoundBorder(bevel, title);
+           Border compound2 = BorderFactory.createCompoundBorder(matte, compound1);
+           Border compound3 = BorderFactory.createCompoundBorder(compound2, padding);
+           label.setBorder(compound3);
+       }
       
+      // private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
+      //     typewriter("Lorem ipsum dolor sit amet. Ex reprehenderit repellendus hic galisum perspiciatis hic porro quia qui nihil earum ut illo rerum et possimus pariatur!");
+      // }
+   
       public void imagePanel() {
          try {
             board = ImageIO.read(new File("assets/BattleUIPanel.png"));
@@ -137,6 +174,28 @@ public class Battle extends JFrame {
             System.out.println("Error: Image file not found");
             return;
          }
+      }
+      public void typewriter(String message) {
+         if (timer != null && timer.isRunning()) return;
+        
+         // resets typewriter when button clicked again
+         index = 0;
+         label.setText("<html>");
+              
+         timer = new Timer(30, new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+               label.setText(label.getText() + String.valueOf(message.charAt(index)));
+               index++;
+               if (index >= message.length()) {
+                  timer.stop();
+               }
+            }
+         });
+         timer.start();
+      }
+      public Dimension getPreferredSize() {
+          return new Dimension(30, 30);
       }
       
       public void paintComponent(Graphics g) {
@@ -161,4 +220,4 @@ public class Battle extends JFrame {
          repaint();
       }
    }
-}
+} 
