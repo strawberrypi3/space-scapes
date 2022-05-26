@@ -31,7 +31,7 @@ public class GameWindow extends JFrame {
       textFrame = new JFrame("Text Screen");
       textFrame.setSize(654, 478-25);
       textFrame.setVisible(true);
-      textPanel = new TextPanel("");
+      textPanel = new TextPanel("", p);
       textFrame.add(textPanel);
       textFrame.validate();
       textFrame.repaint();
@@ -78,7 +78,18 @@ public class GameWindow extends JFrame {
    
    public void write(String message) {
       textPanel.typewriter(message);
-      System.out.println("CHECK");
+   }
+   
+   public void setForeground(String path) {
+      textPanel.setForeground(path);
+   }
+   
+   public void setForeground(String path, int x, int y, int width, int height) {
+      textPanel.setForeground(path, x, y, width, height);
+   } 
+   
+   public void setBackground(String path) {
+      textPanel.setBackground(path);
    }
    
    public int[] playerTurn(Scanner console) {
@@ -139,8 +150,15 @@ public class GameWindow extends JFrame {
       private javax.swing.JLabel label;
       private Image board;
       private Image status;
+      private Image background;
+      private Image foreground;
+      private int foregroundX;
+      private int foregroundY;
+      private int foregroundWidth;
+      private int foregroundHeight;
+      private Entity player;
       
-       public TextPanel(String charaName) {
+      public TextPanel(String charaName, Entity p) {
            characterName = charaName;
            setLayout(new BorderLayout(5,5));
           // jButton1 = new javax.swing.JButton();
@@ -160,21 +178,45 @@ public class GameWindow extends JFrame {
            Border compound2 = BorderFactory.createCompoundBorder(matte, compound1);
            Border compound3 = BorderFactory.createCompoundBorder(compound2, padding);
            label.setBorder(compound3);
+           
+           player = p;
        }
+      
+      public void setForeground(String path) {
+         foreground = imagePanel(path, foreground);
+         // Default settings:
+         foregroundX = 25;
+         foregroundY = 80;
+         foregroundWidth = 640 - 50;
+         foregroundHeight = 478 - 25 - 120;
+      }
+      
+      public void setForeground(String path, int x, int y, int width, int height) {
+         foreground = imagePanel(path, foreground);
+         foregroundX = x;
+         foregroundY = y;
+         foregroundWidth = width;
+         foregroundHeight = height;
+      }
+      
+      public void setBackground(String path) {
+         background = imagePanel(path, background);
+      }
       
       // private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
       //     typewriter("Lorem ipsum dolor sit amet. Ex reprehenderit repellendus hic galisum perspiciatis hic porro quia qui nihil earum ut illo rerum et possimus pariatur!");
       // }
    
-      public void imagePanel() {
+      public Image imagePanel(String path, Image im) {
          try {
-            board = ImageIO.read(new File("assets/BattleUIPanel.png"));
-            status = ImageIO.read(new File("assets/status" + player.getStatus() + ".png"));
+            im = ImageIO.read(new File(path));
+            return im;
          } catch (IOException ex){
             System.out.println("Error: Image file not found");
-            return;
+            return im;
          }
       }
+      
       public void typewriter(String message) {
          if (timer != null && timer.isRunning()) return;
         
@@ -194,6 +236,7 @@ public class GameWindow extends JFrame {
          });
          timer.start();
       }
+      
       public Dimension getPreferredSize() {
           return new Dimension(30, 30);
       }
@@ -203,14 +246,26 @@ public class GameWindow extends JFrame {
          
          g.clearRect(0, 0, getWidth(), getHeight());
          
-         imagePanel();
+         // Draw the background
+         if (background != null) {
+            background = background.getScaledInstance(640, 640, Image.SCALE_DEFAULT);
+            g.drawImage(background, 0, 0, this);
+         }
          
-         // Board is scaled up by 5
-         board = board.getScaledInstance(640, 640, Image.SCALE_DEFAULT);
+         board = imagePanel("assets/BattleUIPanel.png", board);
+         status = imagePanel("assets/status" + player.getStatus() + ".png", status);
+         
+         board = board.getScaledInstance(640, 640, Image.SCALE_DEFAULT); // Board is scaled up by 5
          g.drawImage(board, 0, 0, this);
          
          status = status.getScaledInstance(48, 48, Image.SCALE_DEFAULT);
          g.drawImage(status, 558, 13, this);
+         
+         // Draw the foreground
+         if (foreground != null) {
+            foreground = foreground.getScaledInstance(foregroundWidth, foregroundHeight, Image.SCALE_DEFAULT);
+            g.drawImage(foreground, foregroundX, foregroundY, this);
+         }
          
          // Draw red section of health bar:
          double percentHealth = (double) player.getHealth() / player.getMaxHealth();
