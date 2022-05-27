@@ -37,13 +37,13 @@ public class Game {
       GameWindow window = new GameWindow(player);
       
       // Intro text:
-      window.write("Oh no! Frankenstein approaches! Time to fight!!!");
+      window.write("Quick, harold! Hide your pain!");
       
       // Add arena background:
-      window.setBackground("assets/arena.jpg"); // No image, just for demonstration purposes
+      window.setBackground("assets/hidethepainharold.jpg");
       
       // Add frankenstein.png to foreground at desired coordinates/size:
-      window.setForeground("assets/frankenstein.png", 100, 100, 45, 50); // No image, just for demonstration purposes
+      //window.setForeground("assets/hidethepainharold.jpg", 25, 80, 500, 500);
       
       // Cause battle to occur against enemy (Frankenstein):
       window.doBattle(enemy, console);

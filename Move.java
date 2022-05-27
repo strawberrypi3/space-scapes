@@ -3,7 +3,6 @@
   * stat changes (such as deducting the target's HP) and has certain probabilities 
   * of successfully occuring. A move can also make a target change its status.
   */
-
 public class Move {
    private int statusEffect; // See documentation
    private int strength; // Positive for healing, negative for attacking
@@ -48,9 +47,10 @@ public class Move {
    
    /**
      * Gives an attack's result in the form of an array, accounting for probability
-     * @return a two element array where first element represents strength,
-               second element represents status effect
-    */
+     * @return a two-element int array where first element represents damage performed (negative
+     *         implies damage to opponent, positive implies cure to self) and second element
+     *         represents status effect
+     */
    public int[] deal() {
       int[] attack = new int[2];
       if (probability > Math.random()) {

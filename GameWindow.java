@@ -1,7 +1,3 @@
-/**
-  * Handles the turns and stat changes of a battle between the player
-  * and a single enemy
-  */
 import java.util.Scanner;
 import java.lang.*;
 import javax.swing.*;
@@ -14,31 +10,41 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-
+/**
+  * The window which shows the game and its images, as well as a text panel with buttons
+  */
 public class GameWindow extends JFrame {
    public static final int HB_LENGTH = 53; // Length in percieved (scaled) pixels of health bar
    public static final int HB_WIDTH = 3; // Width in percieved (scaled) pixels of health bar
    
    private Entity player;
-   private Entity enemy;
-   private JFrame frame;
-   private JFrame textFrame;
-   private TextPanel textPanel;
+   private Entity enemy; // enemy which participates in battle against player
+   private JFrame frame; // the game window frame
+   private TextPanel textPanel; // the panel which contains the text
    
+   /**
+     * Constructs a game window and sets up textPanel and overall layout
+     * @param p - Entity which will serve as the player in battles
+     */
    public GameWindow(Entity p) {
       this.getContentPane().setLayout(null);
       
-      textFrame = new JFrame("Text Screen");
-      textFrame.setSize(654, 478-25);
-      textFrame.setVisible(true);
+      frame = new JFrame("Text Screen");
+      frame.setSize(654, 453);
+      frame.setVisible(true);
       textPanel = new TextPanel("", p);
-      textFrame.add(textPanel);
-      textFrame.validate();
-      textFrame.repaint();
+      frame.add(textPanel);
+      frame.validate();
+      frame.repaint();
       
       player = p;
    }
    
+   /**
+     * Processes all the turns of a battle against an entity
+     * @param e - the enemy which will fight against the player
+     * @return true if player won the battle, false otherwise
+     */
    public boolean doBattle(Entity e, Scanner console) {
       enemy = e;
       
@@ -63,7 +69,6 @@ public class GameWindow extends JFrame {
                player.setHealth((int)(player.getHealth() * 0.8));
             }
          }
-         printStats();
          turn++;
       }
       System.out.println("Battle over");
@@ -76,22 +81,47 @@ public class GameWindow extends JFrame {
       }
    }
    
+   /**
+     * Prints a message to the textbox on the TextPanel
+     * @param message - the message to be printed
+     */
    public void write(String message) {
       textPanel.typewriter(message);
    }
    
+   /**
+     * Displays an image to the foreground of the TextPanel using default position and size values
+     * @param path - the filepath of the image to be displayed
+     */
    public void setForeground(String path) {
       textPanel.setForeground(path);
    }
    
+   /**
+     * Displays an image to the foreground of the TextPanel using custom size and position values
+     * @param path - the filepath of the image to be displayed
+     * @param x - the desired x-position of the top left point of the image
+     * @param y - the desired y-position of the top left point of the image
+     * @param width - the desired horizontal side length of the image
+     * @param height - the desired vertical side length of the image
+     */
    public void setForeground(String path, int x, int y, int width, int height) {
       textPanel.setForeground(path, x, y, width, height);
    } 
    
+   /**
+     * Displays an image in the background of the TextPanel, automatically stretched across the
+     * length of the screen
+     * @param path - the filepath of the image to be displayed
+     */
    public void setBackground(String path) {
       textPanel.setBackground(path);
    }
    
+   /**
+     * Prompts the player to select a move and processes said move
+     * @return the result of the dealt processed move taken by the player
+     */
    public int[] playerTurn(Scanner console) {
       System.out.println("Select from the following:");
       Move[] moveset = player.getMoveset();
@@ -102,6 +132,10 @@ public class GameWindow extends JFrame {
       return processMove(moveset[moveNumber], player, enemy);
    }
    
+   /**
+     * Has the enemy pick a random move from their moveset and processes said move
+     * @return the result of the dealt processed move taken by the enemy
+     */
    public int[] enemyTurn() {
       Move[] moveset = enemy.getMoveset();
       int moveNumber = (int)(Math.random() * moveset.length);
@@ -109,6 +143,14 @@ public class GameWindow extends JFrame {
       return processMove(move, enemy, player);
    }
    
+   /**
+     * Deals a Move, prints its result, and update statuses and health accordingly
+     * @param move - the move that was chosen by subject
+     * @param subject - the Entity that chose the move being processed
+     * @param other - the opposing Entity battling the subject
+     * @return the dealt move's returned array
+     * @see Move.deal()
+     */
    public int[] processMove(Move move, Entity subject, Entity other) {
       System.out.println(subject.getName() + " used " + move.getName());
       int result[] = move.deal();
@@ -135,13 +177,9 @@ public class GameWindow extends JFrame {
       return result;
    }
    
-   public void printStats() {
-      System.out.println();
-      System.out.println("Your HP: " + player.getHealth());
-      System.out.println("Your status: " + player.getStatusName());
-      System.out.println();
-   }
-   
+   /**
+     * A panel which displays text and also draws graphics every frame
+     */
    public class TextPanel extends javax.swing.JPanel {
       private String characterName;
       private int index = 0;
@@ -158,6 +196,11 @@ public class GameWindow extends JFrame {
       private int foregroundHeight;
       private Entity player;
       
+      /**
+        * Constructs TextPanel
+        * @param charaName - the border title
+        * @param p - the player Entity
+        */
       public TextPanel(String charaName, Entity p) {
            characterName = charaName;
            setLayout(new BorderLayout(5,5));
@@ -182,6 +225,10 @@ public class GameWindow extends JFrame {
            player = p;
        }
       
+      /**
+        * Displays an image to the foreground of the TextPanel using default position and size values
+        * @param path - the filepath of the image to be displayed
+        */
       public void setForeground(String path) {
          foreground = imagePanel(path, foreground);
          // Default settings:
@@ -191,6 +238,14 @@ public class GameWindow extends JFrame {
          foregroundHeight = 478 - 25 - 120;
       }
       
+      /**
+        * Displays an image to the foreground of the TextPanel using custom size and position values
+        * @param path - the filepath of the image to be displayed
+        * @param x - the desired x-position of the top left point of the image
+        * @param y - the desired y-position of the top left point of the image
+        * @param width - the desired horizontal side length of the image
+        * @param height - the desired vertical side length of the image
+        */
       public void setForeground(String path, int x, int y, int width, int height) {
          foreground = imagePanel(path, foreground);
          foregroundX = x;
@@ -199,6 +254,11 @@ public class GameWindow extends JFrame {
          foregroundHeight = height;
       }
       
+      /**
+        * Displays an image in the background of the TextPanel, automatically stretched across the
+        * length of the screen
+        * @param path - the filepath of the image to be displayed
+        */
       public void setBackground(String path) {
          background = imagePanel(path, background);
       }
@@ -207,6 +267,11 @@ public class GameWindow extends JFrame {
       //     typewriter("Lorem ipsum dolor sit amet. Ex reprehenderit repellendus hic galisum perspiciatis hic porro quia qui nihil earum ut illo rerum et possimus pariatur!");
       // }
    
+      /**
+        * Tries to set the desired image file to the desired image object
+        * @param path - the filepath of the image
+        * @param im - the image object
+        */
       public Image imagePanel(String path, Image im) {
          try {
             im = ImageIO.read(new File(path));
@@ -217,6 +282,10 @@ public class GameWindow extends JFrame {
          }
       }
       
+      /**
+        * Prints a message to the textbox with a stalled typewriter effect
+        * @param message - the message to be printed
+        */
       public void typewriter(String message) {
          if (timer != null && timer.isRunning()) return;
         
@@ -237,10 +306,10 @@ public class GameWindow extends JFrame {
          timer.start();
       }
       
-      public Dimension getPreferredSize() {
-          return new Dimension(30, 30);
-      }
-      
+      /**
+        * Paints graphics to the panel each frame
+        * @param g - a Graphics object, automatically passed in
+        */
       public void paintComponent(Graphics g) {
          super.paintComponent(g);
          
@@ -248,7 +317,7 @@ public class GameWindow extends JFrame {
          
          // Draw the background
          if (background != null) {
-            background = background.getScaledInstance(640, 640, Image.SCALE_DEFAULT);
+            background = background.getScaledInstance(654, 453, Image.SCALE_DEFAULT);
             g.drawImage(background, 0, 0, this);
          }
          

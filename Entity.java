@@ -1,11 +1,21 @@
+/**
+  * Represents a player or enemy which can participate in a battle
+  */
 public class Entity {
    private String name;
    private int health;
    private int maxHealth;
-   private int speed;
-   private int status;
+   private int speed; // In battle, the Entity with the lower speed moves first
+   private int status; // 0 = none, 1 = poison, 2 = confusion, 3 = tired
    private Move[] moveset;
    
+   /**
+     * Constructs an Entity
+     * @param n - name
+     * @param h - max health (and inital current health)
+     * @param s - initial speed
+     * @param m - moveset (array of moves)
+     */
    public Entity(String n, int h, int s, Move[] m) {
       name = n;
       health = h;
@@ -27,6 +37,10 @@ public class Entity {
       setHealth(health + change);
    }
    
+   /**
+     * Sets status and updates whatever stats can be immediately updated
+     * @param s - the status being set
+     */
    public void setStatus(int s) {
       if (status == s) { // no change
          return;
@@ -67,6 +81,10 @@ public class Entity {
       return maxHealth;
    }
    
+   /**
+     * Sets Entity health, but will not set health above the max health
+     * @param h - the health to be set
+     */
    public void setHealth(int h) {
       health = h;
       if (health > maxHealth) {
@@ -79,6 +97,10 @@ public class Entity {
       return status;
    }
    
+   /**
+     * Gets the name of the status
+     * @return the name of the current status
+     */
    public String getStatusName() {
       String name;
       if (status == 0) {
