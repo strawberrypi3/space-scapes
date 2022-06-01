@@ -48,7 +48,6 @@ public class Game {
       // Cause battle to occur against enemy (Frankenstein):
       window.doBattle(enemy, console);
       
-      window.write("Do you want to go right or left");
-      int answer = Action.waitForAnswer();
+      window.addButton("Hello");
    }
 }

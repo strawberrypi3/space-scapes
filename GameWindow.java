@@ -13,7 +13,7 @@ import java.io.IOException;
 /**
   * The window which shows the game and its images, as well as a text panel with buttons
   */
-public class GameWindow extends JFrame {
+public class GameWindow extends JFrame implements ActionListener {
    public static final int HB_LENGTH = 53; // Length in percieved (scaled) pixels of health bar
    public static final int HB_WIDTH = 3; // Width in percieved (scaled) pixels of health bar
    
@@ -21,6 +21,8 @@ public class GameWindow extends JFrame {
    private Entity enemy; // enemy which participates in battle against player
    private JFrame frame; // the game window frame
    private TextPanel textPanel; // the panel which contains the text
+   
+   private ArrayList<JButton>() buttons;
    
    /**
      * Constructs a game window and sets up textPanel and overall layout
@@ -175,6 +177,18 @@ public class GameWindow extends JFrame {
       other.setStatus(result[1]);
       
       return result;
+   }
+   
+   public void addButton(String text) {
+      JButton b = new JButton(text);
+      b.addActionListener(this);
+      buttons.add(b);
+      textPanel.add(b);
+   }
+   
+   public void actionPerformed(ActionEvent e) {
+      JButton source = (JButton)e.getSource();
+      Action.setAnswer(source.getLabel());
    }
    
    /**
