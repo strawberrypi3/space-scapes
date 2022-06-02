@@ -185,6 +185,10 @@ public class GameWindow extends JFrame implements ActionListener {
       return result;
    }
    
+   /**
+     * Adds a button to textPanel with a specific name/text/label
+     * @param text - the desired button's label/text/name
+     */
    public void addButton(String text) {
       JButton b = new JButton(text);
       b.addActionListener(this);
@@ -192,6 +196,10 @@ public class GameWindow extends JFrame implements ActionListener {
       textPanel.add(b, BorderLayout.SOUTH);
    }
    
+   /**
+     * Deletes a button on textPanel based on its label name
+     * @param text - the label/text/name of the button to delete
+     */
    public void deleteButton(String text) {
       Component[] components = textPanel.getComponents();
       for (Component c : components) {
@@ -203,6 +211,22 @@ public class GameWindow extends JFrame implements ActionListener {
       }
    }
    
+   /**
+     * Deletes all buttons currently on textPanel
+     */
+   public void clearAllButtons() {
+      Component[] components = textPanel.getComponents();
+      for (Component c : components) {
+         if (c instanceof JButton) {
+            textPanel.remove(c);
+         }
+      }
+   }
+   
+   /**
+     * Sets the static variable answer of the Action class to the text name of the button that was pressed
+     * @param e - the ActionEvent result of the action performed
+     */
    public void actionPerformed(ActionEvent e) {
       JButton source = (JButton)e.getSource();
       Action.setAnswer(source.getLabel());

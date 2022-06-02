@@ -35,8 +35,22 @@ public class Game {
       // Create a new display window:
       GameWindow window = new GameWindow(player);
       
-      // Intro text:
-      window.write("Quick, harold! Hide your pain!HelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHello");
+      // CYOA example code:
+      window.write("Do you want to walk right or left?");
+      window.addButton("Left");
+      window.addButton("Right");
+      String answer = Action.waitForAnswer();
+      
+      if (answer.equals("Left")) {
+         window.setBackground("assets/leftPath.jpg");
+         window.setForeground("assets/alienSoldier.png");
+         window.write("You walk left, and oh no! There's an alien!");
+         
+      } else if (answer.equals("Right")) {
+         window.setBackground("assets/rightPath.jpg");
+         window.setForeground("assets/blank.png");
+         window.write("You walk right, and there are no aliens in your path.");
+      }
       
       // Add arena background:
       window.setBackground("assets/hidethepainharold.jpg");
