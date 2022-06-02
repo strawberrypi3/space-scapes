@@ -32,12 +32,11 @@ public class Game {
       // Creates an enemy named Frankenstein with 100 HP, 40 speed, and frankensteinMoveset:
       Entity enemy = new Entity("Frankenstein", 100, 40, frankensteinMoveset); 
       
-      
       // Create a new display window:
       GameWindow window = new GameWindow(player);
       
       // Intro text:
-      window.write("Quick, harold! Hide your pain!");
+      window.write("Quick, harold! Hide your pain!HelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHello");
       
       // Add arena background:
       window.setBackground("assets/hidethepainharold.jpg");
@@ -45,9 +44,10 @@ public class Game {
       // Add frankenstein.png to foreground at desired coordinates/size:
       //window.setForeground("assets/hidethepainharold.jpg", 25, 80, 500, 500);
       
+      window.addButton("Hello");
+      window.addButton("Bye");
+      window.deleteButton("Hello");
       // Cause battle to occur against enemy (Frankenstein):
       window.doBattle(enemy, console);
-      
-      window.addButton("Hello");
    }
 }

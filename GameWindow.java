@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.util.ArrayList;
 import java.lang.*;
 import javax.swing.*;
 import javax.swing.border.*; // border for textbox
@@ -22,17 +23,18 @@ public class GameWindow extends JFrame implements ActionListener {
    private JFrame frame; // the game window frame
    private TextPanel textPanel; // the panel which contains the text
    
-   private ArrayList<JButton>() buttons;
+   private ArrayList<JButton> buttons;
+   FlowLayout layout = new FlowLayout();
    
    /**
      * Constructs a game window and sets up textPanel and overall layout
      * @param p - Entity which will serve as the player in battles
      */
    public GameWindow(Entity p) {
-      this.getContentPane().setLayout(null);
+      //this.getContentPane().setLayout(null);
       
       frame = new JFrame("Text Screen");
-      frame.setSize(654, 453);
+      frame.setSize(654, 453+5*13);
       frame.setVisible(true);
       textPanel = new TextPanel("", p);
       frame.add(textPanel);
@@ -40,6 +42,10 @@ public class GameWindow extends JFrame implements ActionListener {
       frame.repaint();
       
       player = p;
+      
+      buttons = new ArrayList<JButton>();
+      layout.setAlignment(FlowLayout.CENTER);
+      textPanel.setLayout(layout);
    }
    
    /**
@@ -88,7 +94,7 @@ public class GameWindow extends JFrame implements ActionListener {
      * @param message - the message to be printed
      */
    public void write(String message) {
-      textPanel.typewriter(message);
+      textPanel.typewriter(message + "</html>");
    }
    
    /**
@@ -183,7 +189,18 @@ public class GameWindow extends JFrame implements ActionListener {
       JButton b = new JButton(text);
       b.addActionListener(this);
       buttons.add(b);
-      textPanel.add(b);
+      textPanel.add(b, BorderLayout.SOUTH);
+   }
+   
+   public void deleteButton(String text) {
+      Component[] components = textPanel.getComponents();
+      for (Component c : components) {
+         if (c instanceof JButton) {
+            if (((JButton)c).getLabel().equals(text)) {
+               textPanel.remove(c);
+            }
+         }
+      }
    }
    
    public void actionPerformed(ActionEvent e) {
@@ -226,7 +243,8 @@ public class GameWindow extends JFrame implements ActionListener {
            add(label, BorderLayout.PAGE_END);
           // add(jButton1, BorderLayout.NORTH);
            setPreferredSize(new Dimension(650, 300));
-   
+           
+           /*
            Border bevel = BorderFactory.createRaisedBevelBorder();
            Border title = BorderFactory.createTitledBorder(characterName.toUpperCase());
            Border matte = BorderFactory.createMatteBorder(15, 15, 15, 15, new Color(0, 0, 0, 0));
@@ -235,6 +253,9 @@ public class GameWindow extends JFrame implements ActionListener {
            Border compound2 = BorderFactory.createCompoundBorder(matte, compound1);
            Border compound3 = BorderFactory.createCompoundBorder(compound2, padding);
            label.setBorder(compound3);
+           */
+           Border matte = BorderFactory.createMatteBorder(15, 15, 0, 15, new Color(0, 0, 0, 0));
+           label.setBorder(matte);
            
            player = p;
        }
@@ -332,7 +353,7 @@ public class GameWindow extends JFrame implements ActionListener {
          // Draw the background
          if (background != null) {
             background = background.getScaledInstance(654, 453, Image.SCALE_DEFAULT);
-            g.drawImage(background, 0, 0, this);
+            g.drawImage(background, 0, 0+13*5, this);
          }
          
          board = imagePanel("assets/BattleUIPanel.png", board);
@@ -342,7 +363,7 @@ public class GameWindow extends JFrame implements ActionListener {
          g.drawImage(board, 0, 0, this);
          
          status = status.getScaledInstance(48, 48, Image.SCALE_DEFAULT);
-         g.drawImage(status, 558, 13, this);
+         g.drawImage(status, 558, 13+13*5, this);
          
          // Draw the foreground
          if (foreground != null) {
