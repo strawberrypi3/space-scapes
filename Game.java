@@ -22,7 +22,7 @@ public class Game {
             "Object-Oriented Software (1st Edition)\""); // Makes enemy tired
       
       
-      Move[] frankensteinMoveset = new Move[2]; // Frankenstein will have 2 moves in his moveset
+      Move[] frankensteinMoveset = new Move[1]; // Frankenstein will have 2 moves in his moveset
       frankensteinMoveset[0] = new Move(0, -50, 1.0, 0.0, "Smack"); // Deals 50 damage to opponent
       
       
@@ -35,6 +35,7 @@ public class Game {
       // Create a new display window:
       GameWindow window = new GameWindow(player);
       
+      /*
       // CYOA example code:
       window.write("Do you want to walk right or left?");
       window.addButton("Left");
@@ -44,13 +45,16 @@ public class Game {
       if (answer.equals("Left")) {
          window.setBackground("assets/leftPath.jpg");
          window.setForeground("assets/alienSoldier.png");
+         window.clearAllButtons();
          window.write("You walk left, and oh no! There's an alien!");
          
       } else if (answer.equals("Right")) {
          window.setBackground("assets/rightPath.jpg");
          window.setForeground("assets/blank.png");
+         window.clearAllButtons();
          window.write("You walk right, and there are no aliens in your path.");
       }
+      */
       
       // Add arena background:
       window.setBackground("assets/hidethepainharold.jpg");
@@ -58,10 +62,7 @@ public class Game {
       // Add frankenstein.png to foreground at desired coordinates/size:
       //window.setForeground("assets/hidethepainharold.jpg", 25, 80, 500, 500);
       
-      window.addButton("Hello");
-      window.addButton("Bye");
-      window.deleteButton("Hello");
       // Cause battle to occur against enemy (Frankenstein):
-      window.doBattle(enemy, console);
+      window.doBattle(enemy);
    }
 }

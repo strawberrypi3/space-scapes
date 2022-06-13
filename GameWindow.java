@@ -12,48 +12,54 @@ import java.io.File;
 import java.io.IOException;
 
 /**
-  * The window which shows the game and its images, as well as a text panel with buttons
+  * The window which displayes the game's images, the player's current status effect, the player's 
+  * current health, the text being printed to screen, and the buttons for advancing the text.
+  * Has the capability to process battles given two Entity objects (one being a player).
   */
 public class GameWindow extends JFrame implements ActionListener {
-   public static final int HB_LENGTH = 53; // Length in percieved (scaled) pixels of health bar
-   public static final int HB_WIDTH = 3; // Width in percieved (scaled) pixels of health bar
+   /** Length in percieved (scaled) pixels of health bar */
+   public static final int HB_LENGTH = 53;
+   /** Width in percieved (scaled) pixels of health bar */
+   public static final int HB_WIDTH = 3;
    
+   /** Entity representing the player, whose status is displayed to the window */
    private Entity player;
-   private Entity enemy; // enemy which participates in battle against player
-   private JFrame frame; // the game window frame
-   private TextPanel textPanel; // the panel which contains the text
-   
-   private ArrayList<JButton> buttons;
+   /** Enemy which participates in battle against the player */
+   private Entity enemy;
+   /** The game window frame */
+   private JFrame frame;
+   /** The panel which contains the text and buttons */
+   private TextPanel textPanel;
+   /** The layout of the TextPanel */
    FlowLayout layout = new FlowLayout();
    
    /**
      * Constructs a game window and sets up textPanel and overall layout
-     * @param p - Entity which will serve as the player in battles
+     * @param p Entity which will serve as the player in battles
      */
    public GameWindow(Entity p) {
-      //this.getContentPane().setLayout(null);
-      
       frame = new JFrame("Text Screen");
-      frame.setSize(654, 453+5*13);
+      frame.setSize(654, 453+5*21);
       frame.setVisible(true);
+      frame.setResizable(false);
       textPanel = new TextPanel("", p);
       frame.add(textPanel);
       frame.validate();
       frame.repaint();
       
       player = p;
-      
-      buttons = new ArrayList<JButton>();
+
       layout.setAlignment(FlowLayout.CENTER);
       textPanel.setLayout(layout);
    }
    
    /**
      * Processes all the turns of a battle against an entity
-     * @param e - the enemy which will fight against the player
+     * @param e the enemy which will fight against the player
      * @return true if player won the battle, false otherwise
      */
-   public boolean doBattle(Entity e, Scanner console) {
+   public boolean doBattle(Entity e) {
+      clearAllButtons();
       enemy = e;
       
       int turn;
@@ -66,7 +72,7 @@ public class GameWindow extends JFrame implements ActionListener {
       }
       while (player.getHealth() > 0 && enemy.getHealth() > 0) {
          if (turn % 2 == 0) {
-            playerTurn(console);
+            playerTurn();
             
             if (enemy.getStatus() == 1) { // poison
                enemy.setHealth((int)(enemy.getHealth() * 0.8));
@@ -79,19 +85,40 @@ public class GameWindow extends JFrame implements ActionListener {
          }
          turn++;
       }
-      System.out.println("Battle over");
+      addButton(">");
+      write("Battle over...");
+      String a = Action.waitForAnswer();
       if (player.getHealth() > 0) {
-         System.out.println("You won!!");
+         write("You won!!");
+         a = Action.waitForAnswer();
+         clearAllButtons();
          return true;
       } else {
-         System.out.println("You lost - GAME OVER");
+         write("You lost - GAME OVER");
+         a = Action.waitForAnswer();
+         clearAllButtons();
          return false;
       }
    }
    
    /**
+     * Processes all the turns of a battle against an entity and plays
+     * the desired audio file for the duration of the battle
+     * @param e the enemy which will fight against the player
+     * @param musicPath the filepath of the desired .wav file to be played during the battle
+     * @return true if player won the battle, false otherwise
+     */
+   public boolean doBattle(Entity e, String musicPath) {
+      Audio audio = new Audio(musicPath);
+      audio.play();
+      boolean result = doBattle(e);
+      audio.stop();
+      return result;
+   }
+   
+   /**
      * Prints a message to the textbox on the TextPanel
-     * @param message - the message to be printed
+     * @param message the message to be printed
      */
    public void write(String message) {
       textPanel.typewriter(message + "</html>");
@@ -99,7 +126,7 @@ public class GameWindow extends JFrame implements ActionListener {
    
    /**
      * Displays an image to the foreground of the TextPanel using default position and size values
-     * @param path - the filepath of the image to be displayed
+     * @param path the filepath of the image to be displayed
      */
    public void setForeground(String path) {
       textPanel.setForeground(path);
@@ -107,11 +134,11 @@ public class GameWindow extends JFrame implements ActionListener {
    
    /**
      * Displays an image to the foreground of the TextPanel using custom size and position values
-     * @param path - the filepath of the image to be displayed
-     * @param x - the desired x-position of the top left point of the image
-     * @param y - the desired y-position of the top left point of the image
-     * @param width - the desired horizontal side length of the image
-     * @param height - the desired vertical side length of the image
+     * @param path the filepath of the image to be displayed
+     * @param x the desired x-position of the top left point of the image
+     * @param y the desired y-position of the top left point of the image
+     * @param width the desired horizontal side length of the image
+     * @param height the desired vertical side length of the image
      */
    public void setForeground(String path, int x, int y, int width, int height) {
       textPanel.setForeground(path, x, y, width, height);
@@ -120,7 +147,7 @@ public class GameWindow extends JFrame implements ActionListener {
    /**
      * Displays an image in the background of the TextPanel, automatically stretched across the
      * length of the screen
-     * @param path - the filepath of the image to be displayed
+     * @param path the filepath of the image to be displayed
      */
    public void setBackground(String path) {
       textPanel.setBackground(path);
@@ -130,14 +157,22 @@ public class GameWindow extends JFrame implements ActionListener {
      * Prompts the player to select a move and processes said move
      * @return the result of the dealt processed move taken by the player
      */
-   public int[] playerTurn(Scanner console) {
-      System.out.println("Select from the following:");
+   public int[] playerTurn() {
+      write("Select move:");
       Move[] moveset = player.getMoveset();
       for (int i = 0; i < moveset.length; i++) {
-         System.out.println("\t(" + (i + 1) + ") " + moveset[i].getName());
+         addButton(moveset[i].getName());
       }
-      int moveNumber = console.nextInt() - 1;
-      return processMove(moveset[moveNumber], player, enemy);
+      deleteButton(">");
+      String answer = Action.waitForAnswer();
+      Move chosenMove = player.getMoveset()[0];
+      for (Move m : player.getMoveset()) {
+         if (answer.equals(m.getName())) {
+            chosenMove = m;
+         }
+      }
+      clearAllButtons();
+      return processMove(chosenMove, player, enemy);
    }
    
    /**
@@ -152,53 +187,73 @@ public class GameWindow extends JFrame implements ActionListener {
    }
    
    /**
-     * Deals a Move, prints its result, and update statuses and health accordingly
-     * @param move - the move that was chosen by subject
-     * @param subject - the Entity that chose the move being processed
-     * @param other - the opposing Entity battling the subject
+     * Deals a Move against an opponent, prints its result to the textbox, and updates statuses 
+     * and health accordingly
+     * @param move the move that was chosen by subject
+     * @param subject the Entity that chose the move being processed
+     * @param other the opposing Entity battling the subject
      * @return the dealt move's returned array
-     * @see Move.deal()
      */
    public int[] processMove(Move move, Entity subject, Entity other) {
-      System.out.println(subject.getName() + " used " + move.getName());
+      subject.getName();
+      move.getName();
+      addButton(">");
+      write(subject.getName() + " used " + move.getName());
+      String a = Action.waitForAnswer();
+      
       int result[] = move.deal();
       
       if (result[0] == 0 && result[1] == 0) { // Move unsuccessful
-         System.out.println("...but it didn't work!");
+         write("...but it didn't work!");
+         a = Action.waitForAnswer();
          return result;
       }
       
       if (result[0] > 0) {
-         System.out.println(subject.getName() + " healed by " + result[0] + " HP!");
-         subject.recieveDamage(result[0]);
+         write(subject.getName() + " healed by " + result[0] + " HP!");
+         boolean maxHealth = subject.recieveDamage(result[0]);
+         a = Action.waitForAnswer();
+         if (maxHealth) {
+            write(subject.getName() + " is at max health!");
+            a = Action.waitForAnswer();
+         }
       } else {
-         System.out.println(subject.getName() + " dealt " + Math.abs(result[0]) + " damage!");
+         write(subject.getName() + " dealt " + Math.abs(result[0]) + " damage!");
          other.recieveDamage(result[0]);
+         a = Action.waitForAnswer();
       }
       
       if (result[1] == 1) {
-         System.out.println("Poison has been afflicted to " + other.getName());
+         write("Poison has been afflicted to " + other.getName());
+         a = Action.waitForAnswer();
+      } else if (result[1] == 2) {
+         write(other.getName() + " is confused!");
+         a = Action.waitForAnswer();
+      } else if (result[1] == 3) {
+         write(other.getName() + " is tired!");
+         a = Action.waitForAnswer();
       }
       
       other.setStatus(result[1]);
+      
+      clearAllButtons();
       
       return result;
    }
    
    /**
      * Adds a button to textPanel with a specific name/text/label
-     * @param text - the desired button's label/text/name
+     * @param text the desired button's label/text/name
      */
    public void addButton(String text) {
       JButton b = new JButton(text);
       b.addActionListener(this);
-      buttons.add(b);
       textPanel.add(b, BorderLayout.SOUTH);
    }
    
    /**
      * Deletes a button on textPanel based on its label name
-     * @param text - the label/text/name of the button to delete
+     * @param text the label/text/name of the button to delete
      */
    public void deleteButton(String text) {
       Component[] components = textPanel.getComponents();
@@ -224,8 +279,8 @@ public class GameWindow extends JFrame implements ActionListener {
    }
    
    /**
-     * Sets the static variable answer of the Action class to the text name of the button that was pressed
-     * @param e - the ActionEvent result of the action performed
+     * Sets Action's static answer variable to the text name of the button that was pressed
+     * @param e the ActionEvent result of the action performed
      */
    public void actionPerformed(ActionEvent e) {
       JButton source = (JButton)e.getSource();
@@ -236,74 +291,66 @@ public class GameWindow extends JFrame implements ActionListener {
      * A panel which displays text and also draws graphics every frame
      */
    public class TextPanel extends javax.swing.JPanel {
-      private String characterName;
-      private int index = 0;
+      /** Current last index of string being printed to screen */
+      private int index = 0; 
+      /** Timer used by typwriter() to stall the typing of each successive character */
       private javax.swing.Timer timer;
-      private javax.swing.JButton jButton1;
+      /** The text label that messages are written to */
       private javax.swing.JLabel label;
+      /** The UI image that serves as the border and overall GUI */
       private Image board;
+      /** The image that displays the player's current status effect */
       private Image status;
+      /** The background image */
       private Image background;
+      /** The foreground image */
       private Image foreground;
+      /** X-coordinate of the upper left corner of the foreground image */
       private int foregroundX;
+      /** Y-coordinate of the upper left corner of the foreground image */
       private int foregroundY;
+      /** Width (pixels) of the foreground image */
       private int foregroundWidth;
+      /** Height (pixels) of the foreground image */
       private int foregroundHeight;
+      /** Player whose information is displayed to the panel */
       private Entity player;
+      /** Set to true only on the frame that a new image is set, to prevent unneccesary drawing */
+      private boolean newImage = false;
       
       /**
         * Constructs TextPanel
-        * @param charaName - the border title
-        * @param p - the player Entity
+        * @param charaName the border title
+        * @param p the player Entity
         */
       public TextPanel(String charaName, Entity p) {
-           characterName = charaName;
-           setLayout(new BorderLayout(5,5));
-          // jButton1 = new javax.swing.JButton();
-          // jButton1.setText("Press to proceed");
-          // jButton1.addActionListener(evt -> jButton1ActionPerformed(evt)); // lambda expression (->): a short way of method writing
-           label = new javax.swing.JLabel();
-           label.setFont(new Font("Arial", Font.BOLD, 15));
-           add(label, BorderLayout.PAGE_END);
-          // add(jButton1, BorderLayout.NORTH);
-           setPreferredSize(new Dimension(650, 300));
+         setLayout(new BorderLayout(5,5));
+         label = new javax.swing.JLabel();
+         label.setFont(new Font("Arial", Font.BOLD, 15));
+         add(label, BorderLayout.PAGE_END);
+         setPreferredSize(new Dimension(650, 300));
            
-           /*
-           Border bevel = BorderFactory.createRaisedBevelBorder();
-           Border title = BorderFactory.createTitledBorder(characterName.toUpperCase());
-           Border matte = BorderFactory.createMatteBorder(15, 15, 15, 15, new Color(0, 0, 0, 0));
-           Border padding = BorderFactory.createEmptyBorder(3, 10, 7, 10);
-           Border compound1 = BorderFactory.createCompoundBorder(bevel, title);
-           Border compound2 = BorderFactory.createCompoundBorder(matte, compound1);
-           Border compound3 = BorderFactory.createCompoundBorder(compound2, padding);
-           label.setBorder(compound3);
-           */
-           Border matte = BorderFactory.createMatteBorder(15, 15, 0, 15, new Color(0, 0, 0, 0));
-           label.setBorder(matte);
+         Border matte = BorderFactory.createMatteBorder(15, 15, 0, 15, new Color(0, 0, 0, 0));
+         label.setBorder(matte);
            
-           player = p;
-       }
+         player = p;
+      }
       
       /**
         * Displays an image to the foreground of the TextPanel using default position and size values
-        * @param path - the filepath of the image to be displayed
+        * @param path the filepath of the image to be displayed
         */
       public void setForeground(String path) {
-         foreground = imagePanel(path, foreground);
-         // Default settings:
-         foregroundX = 25;
-         foregroundY = 80;
-         foregroundWidth = 640 - 50;
-         foregroundHeight = 478 - 25 - 120;
+         setForeground(path, 25, 80, 640 - 50, 478 - 25 - 120); // set with defaults
       }
       
       /**
         * Displays an image to the foreground of the TextPanel using custom size and position values
-        * @param path - the filepath of the image to be displayed
-        * @param x - the desired x-position of the top left point of the image
-        * @param y - the desired y-position of the top left point of the image
-        * @param width - the desired horizontal side length of the image
-        * @param height - the desired vertical side length of the image
+        * @param path the filepath of the image to be displayed
+        * @param x the desired x-position of the top left point of the image
+        * @param y the desired y-position of the top left point of the image
+        * @param width the desired horizontal side length of the image
+        * @param height the desired vertical side length of the image
         */
       public void setForeground(String path, int x, int y, int width, int height) {
          foreground = imagePanel(path, foreground);
@@ -311,25 +358,24 @@ public class GameWindow extends JFrame implements ActionListener {
          foregroundY = y;
          foregroundWidth = width;
          foregroundHeight = height;
+         foreground = foreground.getScaledInstance(foregroundWidth, foregroundHeight, Image.SCALE_DEFAULT);
       }
       
       /**
         * Displays an image in the background of the TextPanel, automatically stretched across the
         * length of the screen
-        * @param path - the filepath of the image to be displayed
+        * @param path the filepath of the image to be displayed
         */
       public void setBackground(String path) {
          background = imagePanel(path, background);
+         background = background.getScaledInstance(654, 453, Image.SCALE_DEFAULT);
       }
-      
-      // private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
-      //     typewriter("Lorem ipsum dolor sit amet. Ex reprehenderit repellendus hic galisum perspiciatis hic porro quia qui nihil earum ut illo rerum et possimus pariatur!");
-      // }
    
       /**
         * Tries to set the desired image file to the desired image object
-        * @param path - the filepath of the image
-        * @param im - the image object
+        * @param path the filepath of the image
+        * @param im the image object
+        * @return the newly set image object
         */
       public Image imagePanel(String path, Image im) {
          try {
@@ -343,31 +389,33 @@ public class GameWindow extends JFrame implements ActionListener {
       
       /**
         * Prints a message to the textbox with a stalled typewriter effect
-        * @param message - the message to be printed
+        * @param message the message to be printed
         */
       public void typewriter(String message) {
-         if (timer != null && timer.isRunning()) return;
+         if (timer != null && timer.isRunning()) 
+            return;
         
          // resets typewriter when button clicked again
          index = 0;
          label.setText("<html>");
               
-         timer = new Timer(30, new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-               label.setText(label.getText() + String.valueOf(message.charAt(index)));
-               index++;
-               if (index >= message.length()) {
-                  timer.stop();
+         timer = new Timer(30, 
+            new AbstractAction() {
+               @Override
+               public void actionPerformed(ActionEvent e) {
+                  label.setText(label.getText() + String.valueOf(message.charAt(index)));
+                  index++;
+                  if (index >= message.length()) {
+                     timer.stop();
+                  }
                }
-            }
-         });
+            });
          timer.start();
       }
       
       /**
         * Paints graphics to the panel each frame
-        * @param g - a Graphics object, automatically passed in
+        * @param g a Graphics object, automatically passed in
         */
       public void paintComponent(Graphics g) {
          super.paintComponent(g);
@@ -376,8 +424,7 @@ public class GameWindow extends JFrame implements ActionListener {
          
          // Draw the background
          if (background != null) {
-            background = background.getScaledInstance(654, 453, Image.SCALE_DEFAULT);
-            g.drawImage(background, 0, 0+13*5, this);
+            g.drawImage(background, 0, 0+21*5, this);
          }
          
          board = imagePanel("assets/BattleUIPanel.png", board);
@@ -387,11 +434,10 @@ public class GameWindow extends JFrame implements ActionListener {
          g.drawImage(board, 0, 0, this);
          
          status = status.getScaledInstance(48, 48, Image.SCALE_DEFAULT);
-         g.drawImage(status, 558, 13+13*5, this);
+         g.drawImage(status, 558, 18+21*5, this);
          
          // Draw the foreground
          if (foreground != null) {
-            foreground = foreground.getScaledInstance(foregroundWidth, foregroundHeight, Image.SCALE_DEFAULT);
             g.drawImage(foreground, foregroundX, foregroundY, this);
          }
          
@@ -399,8 +445,9 @@ public class GameWindow extends JFrame implements ActionListener {
          double percentHealth = (double) player.getHealth() / player.getMaxHealth();
          int pixelsRed = HB_LENGTH - (int)(HB_LENGTH * percentHealth);
          g.setColor(Color.RED);
-         g.fillRect(80, 30, pixelsRed*5, HB_WIDTH*5);
+         g.fillRect(80, 35 + 21*5, pixelsRed*5, HB_WIDTH*5);
+         
          repaint();
       }
    }
-} 
+}

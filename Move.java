@@ -4,10 +4,21 @@
   * of successfully occuring. A move can also make a target change its status.
   */
 public class Move {
-   private int statusEffect; // See documentation
-   private int strength; // Positive for healing, negative for attacking
-   private double probability; // From 0.0 (0%) to 1.0 (100%), probability of attack occuring
-   private double statusProbability; // Same as probability, but with status effect occuring
+   /** The status effect that can be invoked on opponent when Move is dealt */
+   private int statusEffect;
+   /**
+     * The strength (in Entity health) of the move. Positive value will add to self health,
+     * negative value will subtract from opponent's health
+     */
+   private int strength;
+   /** Probability, from 0.0 (0%) to 1.0 (100%), of attack (strength) being dealt successfully. */
+   private double probability;
+   /**
+     * Probability, from 0.0 (0%) to 1.0 (100%), of status effect being dealt on 
+     * opponent successfully. 
+     */
+   private double statusProbability;
+   /** Player-visible name of the Move */
    private String name;
    
    /**
