@@ -1263,6 +1263,7 @@ public class ChoiceSystem {
 		answer = Action.waitForAnswer();
 		window.deleteButton("Ignore");
 		window.deleteButton("Acknowledge");
+      city2();
 		if (answer.equals("Ignore")) {
 			ignoreStory();
 		} else if (answer.equals("Acknowledge")) {

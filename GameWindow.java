@@ -321,7 +321,7 @@ public class GameWindow extends JFrame implements ActionListener {
       /** Time (ms) until each successive character is printed to screen */
       public static final int TEXT_SPEED = 2;
       /** Current last index of string being printed to screen */
-      private int index = 0; 
+      private int index = 0;
       /** Timer used by typwriter() to stall the typing of each successive character */
       private javax.swing.Timer timer;
       /** The text label that messages are written to */
