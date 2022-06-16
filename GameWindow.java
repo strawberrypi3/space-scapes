@@ -30,6 +30,8 @@ public class GameWindow extends JFrame implements ActionListener {
    private JFrame frame;
    /** The panel which contains the text and buttons */
    private TextPanel textPanel;
+   /** The music which plays during a battle */
+   private Audio song;
    /** The layout of the TextPanel */
    FlowLayout layout = new FlowLayout();
    
@@ -39,13 +41,24 @@ public class GameWindow extends JFrame implements ActionListener {
      */
    public GameWindow(Entity p) {
       frame = new JFrame("Text Screen");
-      frame.setSize(654, 453+5*21);
+      frame.setSize(646, 555);
       frame.setVisible(true);
       frame.setResizable(false);
       textPanel = new TextPanel("", p);
       frame.add(textPanel);
       frame.validate();
       frame.repaint();
+      
+      // Make audio also stop upon closing:
+      frame.addWindowListener(new java.awt.event.WindowAdapter() {
+         @Override
+         public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+            if (song != null) {
+               song.stop();
+            }
+            System.exit(0);
+         }
+      });
       
       player = p;
 
@@ -109,10 +122,10 @@ public class GameWindow extends JFrame implements ActionListener {
      * @return true if player won the battle, false otherwise
      */
    public boolean doBattle(Entity e, String musicPath) {
-      Audio audio = new Audio(musicPath);
-      audio.play();
+      song = new Audio(musicPath);
+      song.play();
       boolean result = doBattle(e);
-      audio.stop();
+      song.stop();
       return result;
    }
    
@@ -143,6 +156,13 @@ public class GameWindow extends JFrame implements ActionListener {
    public void setForeground(String path, int x, int y, int width, int height) {
       textPanel.setForeground(path, x, y, width, height);
    } 
+   
+   /**
+     * Sets foreground image to null
+     */
+   public void clearForeground() {
+      textPanel.clearForeground();
+   }
    
    /**
      * Displays an image in the background of the TextPanel, automatically stretched across the
@@ -206,6 +226,7 @@ public class GameWindow extends JFrame implements ActionListener {
       if (result[0] == 0 && result[1] == 0) { // Move unsuccessful
          write("...but it didn't work!");
          a = Action.waitForAnswer();
+         clearAllButtons();
          return result;
       }
       
@@ -248,6 +269,8 @@ public class GameWindow extends JFrame implements ActionListener {
    public void addButton(String text) {
       JButton b = new JButton(text);
       b.addActionListener(this);
+      b.setBackground(new Color(Integer.parseInt("5a078b", 16))); // 35 3 55, purple
+      b.setForeground(new Color(Integer.parseInt("7cad6d", 16))); // green
       textPanel.add(b, BorderLayout.SOUTH);
    }
    
@@ -287,10 +310,16 @@ public class GameWindow extends JFrame implements ActionListener {
       Action.setAnswer(source.getLabel());
    }
    
+   public void setSong(Audio a) {
+      song = a;
+   }
+   
    /**
      * A panel which displays text and also draws graphics every frame
      */
    public class TextPanel extends javax.swing.JPanel {
+      /** Time (ms) until each successive character is printed to screen */
+      public static final int TEXT_SPEED = 2;
       /** Current last index of string being printed to screen */
       private int index = 0; 
       /** Timer used by typwriter() to stall the typing of each successive character */
@@ -362,6 +391,13 @@ public class GameWindow extends JFrame implements ActionListener {
       }
       
       /**
+        * Sets foreground image to null
+        */
+      public void clearForeground() {
+         foreground = null;
+      }
+      
+      /**
         * Displays an image in the background of the TextPanel, automatically stretched across the
         * length of the screen
         * @param path the filepath of the image to be displayed
@@ -399,7 +435,7 @@ public class GameWindow extends JFrame implements ActionListener {
          index = 0;
          label.setText("<html>");
               
-         timer = new Timer(30, 
+         timer = new Timer(TEXT_SPEED, 
             new AbstractAction() {
                @Override
                public void actionPerformed(ActionEvent e) {
@@ -445,6 +481,9 @@ public class GameWindow extends JFrame implements ActionListener {
          double percentHealth = (double) player.getHealth() / player.getMaxHealth();
          int pixelsRed = HB_LENGTH - (int)(HB_LENGTH * percentHealth);
          g.setColor(Color.RED);
+         if (pixelsRed > HB_LENGTH) {
+            pixelsRed = HB_LENGTH; // clamp
+         }
          g.fillRect(80, 35 + 21*5, pixelsRed*5, HB_WIDTH*5);
          
          repaint();
