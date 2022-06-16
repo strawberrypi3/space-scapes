@@ -1253,9 +1253,6 @@ public class ChoiceSystem {
 		player = new Entity("Avatar", 200, 50, moveset);
 		window = new GameWindow(player);
 		window.addButton(">");
-      
-      leader();
-      
 		window.setBackground("assets/alert1.jpg");
 		window.write("ALERT! ALERT! This universe is in grave danger.");
 		answer = Action.waitForAnswer();
