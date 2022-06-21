@@ -5,7 +5,8 @@ battle aliens and humans alike, and save the universe!
 This game contains choices which affect the course of the story, as well as turn-based
 role-playing-game style battles full of strategy and epic music. Choose what you want your
 avatar to do, and what moves you want them to use when battling enemies, while trying to
-keep your health above zero and minimize negative status effects.
+keep your health above zero and minimize negative status effects. The game uses Java's Swing
+library (JFrame, JPanel, JButton, etc) to display images and GUI elements to the player.
 
 This game includes 19 endings - can you get them all?
 - HERO ending
