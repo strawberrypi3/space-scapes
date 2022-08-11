@@ -1,6 +1,7 @@
 # Description
-SpaceScapes is a choose-your-own-adventure science fiction video game. Make choices that matter,
-battle aliens and humans alike, and save the universe!
+SpaceScapes is a choose-your-own-adventure science fiction video game, made by my group as our final
+project for Computer Science class. Make choices that matter, battle aliens and humans alike, and 
+save the universe!
 
 This game contains choices which affect the course of the story, as well as turn-based
 role-playing-game style battles full of strategy and epic music. Choose what you want your
