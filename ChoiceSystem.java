@@ -61,13 +61,7 @@ public class ChoiceSystem {
 		answer = Action.waitForAnswer();
 		window.write("\"Help me out... I'm gonna need your advice.\"");
 		answer = Action.waitForAnswer();
-		window.deleteButton(">");
-		window.write("Should I follow them or search for survivors?");
-		window.addButton("Follow");
-		window.addButton("Search");
-		answer = Action.waitForAnswer();
-		window.deleteButton("Follow");
-		window.deleteButton("Search");
+      choice("Should I follow them or search for survivors?", "Follow", "Search");
 		if (answer.equals("Follow")) {
 			window.addButton(">");
 			window.write("\"Alright, here we go...\"");
@@ -126,13 +120,7 @@ public class ChoiceSystem {
 		answer = Action.waitForAnswer();
 		window.write("GUARD: \"Before you can enter, please tell me your clan.\"");
 		answer = Action.waitForAnswer();
-		window.deleteButton(">");
-		window.write("GUARD: \"Are you a governor or a scavenger?\"");
-		window.addButton("Governor");
-		window.addButton("Scavenger");
-		answer = Action.waitForAnswer();
-		window.deleteButton("Governor");
-		window.deleteButton("Scavenger");
+		choice("GUARD: \"Are you a governor or a scavenger?\"", "Governor", "Scavenger");
       window.clearForeground();
 		if (answer.equals("Governor")) {
 			governors();
@@ -150,13 +138,7 @@ public class ChoiceSystem {
 		answer = Action.waitForAnswer();
 		window.write("\"This could be our chance to save the world!!\"");
 		answer = Action.waitForAnswer();
-		window.write("\"Should I run for president?\"");
-		window.deleteButton(">");
-		window.addButton("Yes");
-		window.addButton("No");
-		answer = Action.waitForAnswer();
-		window.deleteButton("Yes");
-		window.deleteButton("No");
+		choice("\"Should I run for president?\"", "Yes", "No");
 		if (answer.equals("Yes")) {
 			intel();
 		} else if (answer.equals("No")) {
@@ -225,13 +207,7 @@ public class ChoiceSystem {
 		answer = Action.waitForAnswer();
 		window.write("'It could pose a security threat.'");
 		answer = Action.waitForAnswer();
-		window.deleteButton(">");
-		window.write("\"Oh my... Should i read the rest or take action now?\"");
-		window.addButton("Read");
-		window.addButton("Take action");
-		answer = Action.waitForAnswer();
-		window.deleteButton("Read");
-		window.deleteButton("Take action");
+		choice("\"Oh my... Should i read the rest or take action now?\"", "Read", "Take action");
 		if (answer.equals("Read")) {
 			recover();
 		} else if (answer.equals("Take action")) {
@@ -315,13 +291,7 @@ public class ChoiceSystem {
 		answer = Action.waitForAnswer();
 		window.write("\"Um, hello to you too.\"");
 		answer = Action.waitForAnswer();
-		window.deleteButton(">");
-		window.write("SCAVENGER: \"Do you want to go solo or join us?\"");
-		window.addButton("Solo");
-		window.addButton("Join");
-		answer = Action.waitForAnswer();
-		window.deleteButton("Solo");
-		window.deleteButton("Join");
+		choice("SCAVENGER: \"Do you want to go solo or join us?\"", "Solo", "Join");
 		if (answer.equals("Solo")) {
 			solo();
 		} else if (answer.equals("Join")) {
@@ -390,13 +360,7 @@ public class ChoiceSystem {
 		answer = Action.waitForAnswer();
 		window.write("\"Hmm... looks like there's something on this scavenger's body.\"");
 		answer = Action.waitForAnswer();
-		window.deleteButton(">");
-		window.write("\"Should I steal it or leave?\"");
-		window.addButton("Steal");
-		window.addButton("Leave");
-		answer = Action.waitForAnswer();
-		window.deleteButton("Steal");
-		window.deleteButton("Leave");
+		choice("\"Should I steal it or leave?\"", "Steal", "Leave");
 		if (answer.equals("Steal")) {
 			timeLoop();
 		} else if (answer.equals("Leave")) {
@@ -457,13 +421,7 @@ public class ChoiceSystem {
 		window.setBackground("assets/interior-dock.jpg"); 
 		window.write("\"Hmm... this place is massive.\"");
 		answer = Action.waitForAnswer();
-		window.deleteButton(">");
-		window.write("\"Should I go find the weapons arsenal or the control room?\"");
-		window.addButton("Weapons Arsenal");
-		window.addButton("Control Room");
-		answer = Action.waitForAnswer();
-		window.deleteButton("Weapons Arsenal");
-		window.deleteButton("Control Room");
+		choice("\"Should I go find the weapons arsenal or the control room?\"", "Weapons Arsenal", "Control Room");
 		if (answer.equals("Weapons Arsenal")) {
 			fight();
 		} else if (answer.equals("Control Room")) {
@@ -520,13 +478,7 @@ public class ChoiceSystem {
 		answer = Action.waitForAnswer();
 		window.write("\"I’m not sure if this is the best idea...\"");
 		answer = Action.waitForAnswer();
-		window.write("\"Should I find an escape pod, or find a hiding spot?\"");
-		window.deleteButton(">");
-		window.addButton("Escape Pod");
-		window.addButton("Hiding Spot");
-		answer = Action.waitForAnswer();
-		window.deleteButton("Escape Pod");
-		window.deleteButton("Hiding Spot");
+		choice("\"Should I find an escape pod, or find a hiding spot?\"", "Escape Pod", "Hiding Spot");
 		if (answer.equals("Escape Pod")) {
 			malfunction();
 		} else if (answer.equals("Hiding Spot")) {
@@ -590,12 +542,7 @@ public class ChoiceSystem {
 		answer = Action.waitForAnswer();
 		window.write("\"Or... I could stay here, and live peacefully... forever.\"");
 		answer = Action.waitForAnswer();
-      window.deleteButton(">");
-		window.addButton("Return to People");
-		window.addButton("Live Happily");
-      window.write("What should I do?");
-		answer = Action.waitForAnswer();
-		window.clearAllButtons();
+      choice("What should I do?", "Return to People", "Live Happily");
 		if (answer.equals("Return to People")) {
 			travel();
 		} else if (answer.equals("Live Happily")) {
@@ -671,13 +618,7 @@ public class ChoiceSystem {
 		answer = Action.waitForAnswer();
 		window.write("ALIEN: \"...and let you work in the trash compactor instead!\"");
 		answer = Action.waitForAnswer();
-		window.write("ALIEN: \"What’ll it be?\"");
-		window.deleteButton(">");
-		window.addButton("Fight");
-		window.addButton("Work");
-		answer = Action.waitForAnswer();
-		window.deleteButton("Fight");
-		window.deleteButton("Work");
+		choice("ALIEN: \"What’ll it be?\"", "Fight", "Work");
 		if (answer.equals("Fight")) {
 			arena();
 		} else if (answer.equals("Work")) {
@@ -736,14 +677,8 @@ public class ChoiceSystem {
 		answer = Action.waitForAnswer();
 		window.write("\"I think I can figure out a way to hack into the pilot controls.\"");
 		answer = Action.waitForAnswer();
-		window.deleteButton(">");
 		window.setBackground("assets/controls7.jpg");
-		window.write("\"Okay I'm in, should I re-route the ship back to earth or go to the conquerors' planet?\"");
-		window.addButton("Earth");
-		window.addButton("Conquerors' Planet");
-		answer = Action.waitForAnswer();
-		window.deleteButton("Earth");
-		window.deleteButton("Conquerors' Planet");
+		choice("\"Okay I'm in, should I re-route the ship back to earth or go to the conquerors' planet?\"", "Earth", "Conquerer's Planet");
 		if (answer.equals("Earth")) {
 			earth();
 		} else if (answer.equals("Conquerors' Planet")) {
@@ -764,13 +699,7 @@ public class ChoiceSystem {
 		answer = Action.waitForAnswer();
 		window.write("\"I think I have to have a disguise if I am going to survive.\"");
 		answer = Action.waitForAnswer();
-		window.deleteButton(">");
-		window.write("\"Should I disguise myself or follow the prisoners?\"");
-		window.addButton("Disguise");
-		window.addButton("Prisoners");
-		answer = Action.waitForAnswer();
-		window.deleteButton("Disguise");
-		window.deleteButton("Prisoners");
+		choice("\"Should I disguise myself or follow the prisoners?\"", "Disguise", "Prisoners");
 		if (answer.equals("Disguise")) {
 			party();
 		} else if (answer.equals("Prisoners")) {
@@ -819,13 +748,7 @@ public class ChoiceSystem {
 		window.write("REBEL LEADER: \"Or don’t join them... join us. We want to stop the conqueors.\"");
 		window.setForeground("assets/rebel-leader.png", 160, 200, 330, 420);
 		answer = Action.waitForAnswer();
-		window.deleteButton(">");
-		window.write("\"What should I do, do I hide or do I rebel?\"");
-		window.addButton("Hide");
-		window.addButton("Rebel");
-		answer = Action.waitForAnswer();
-		window.deleteButton("Hide");
-		window.deleteButton("Rebel");
+		choice("\"What should I do, do I hide or do I rebel?\"", "Hide", "Rebel");
 		if (answer.equals("Hide")) {
 			end1();
 		} else if (answer.equals("Rebel")) {
@@ -874,13 +797,7 @@ public class ChoiceSystem {
 		answer = Action.waitForAnswer();
 		window.write("\"What?! No, hey, let go of me!\"");
 		answer = Action.waitForAnswer();
-		window.deleteButton(">");
-		window.write("ALIEN GUARD: \"Shut up! Which monster do you want to fight? Big or small?\"");
-		window.addButton("Big");
-		window.addButton("Small");
-		answer = Action.waitForAnswer();
-		window.deleteButton("Big");
-		window.deleteButton("Small");
+		choice("ALIEN GUARD: \"Shut up! Which monster do you want to fight? Big or small?\"", "Big", "Small");
 		if (answer.equals("Big")) {
 			glory();
 		} else if (answer.equals("Small")) {
@@ -927,13 +844,7 @@ public class ChoiceSystem {
 		answer = Action.waitForAnswer();
 		window.write("\"Well, what is it?\"");
 		answer = Action.waitForAnswer();
-		window.deleteButton(">");
-		window.write("REBEL LEADER: \"Will you be a leader or follower on this expedition?\"");
-		window.addButton("Leader");
-		window.addButton("Follower");
-		answer = Action.waitForAnswer();
-		window.deleteButton("Leader");
-		window.deleteButton("Follower");
+		choice("REBEL LEADER: \"Will you be a leader or follower on this expedition?\"", "Leader", "Follower");
 		if (answer.equals("Leader")) {
 			leader();
 		} else if (answer.equals("Follower")) {
@@ -942,13 +853,7 @@ public class ChoiceSystem {
 	}
    
 	public static void ending(String text) {
-		window.clearAllButtons();
-		window.write("You got the " + text + " ending. Play again?");
-		window.addButton("Yes");
-		window.addButton("No");
-		answer = Action.waitForAnswer();
-		window.deleteButton("Yes");
-		window.deleteButton("No");
+		choice("You got the " + text + " ending. Play again?", "Yes", "No");
 		if (answer.equals("Yes")) {
          player.setHealth(player.getMaxHealth());
          player.setStatus(0);
@@ -1016,13 +921,7 @@ public class ChoiceSystem {
 			answer = Action.waitForAnswer();
 			window.write("\"Yes, why?\"");
 			answer = Action.waitForAnswer();
-			window.deleteButton(">");
-			window.write("CONQUEROR: \"Do you want to kill or save them?\"");
-			window.addButton("Kill");
-			window.addButton("Save");
-			answer = Action.waitForAnswer();
-			window.deleteButton("Kill");
-			window.deleteButton("Save");
+			choice("CONQUEROR: \"Do you want to kill or save them?\"", "Kill", "Save");
 			if (answer.equals("Kill")) {
 				royal();
 			} else if (answer.equals("Save")) {
@@ -1240,6 +1139,16 @@ public class ChoiceSystem {
 		ending("FALLEN ANGEL");
 	}
    
+   public static void choice(String desc, String choice1, String choice2) {
+      window.deleteButton(">");
+      window.write(desc);
+      window.addButton(choice1);
+	   window.addButton(choice2);
+		answer = Action.waitForAnswer();
+		window.deleteButton(choice1);
+		window.deleteButton(choice2);
+   }
+   
 	public static void main(String[] args) {
 		Move[] moveset = new Move[5]; //	Player will	have 4 moves in their moveset	
 		//	Cures	self by 100	HP: 
@@ -1256,13 +1165,7 @@ public class ChoiceSystem {
 		window.setBackground("assets/alert1.jpg");
 		window.write("ALERT! ALERT! This universe is in grave danger.");
 		answer = Action.waitForAnswer();
-		window.deleteButton(">");
-		window.write("Ignore or acknowledge alert?");
-		window.addButton("Ignore");
-		window.addButton("Acknowledge");
-		answer = Action.waitForAnswer();
-		window.deleteButton("Ignore");
-		window.deleteButton("Acknowledge");
+		choice("Ignore or acknowledge alert?", "Ignore", "Acknowledge");
       city2();
 		if (answer.equals("Ignore")) {
 			ignoreStory();
