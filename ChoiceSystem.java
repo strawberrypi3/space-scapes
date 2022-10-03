@@ -46,18 +46,14 @@ public class ChoiceSystem {
 		answer = Action.waitForAnswer();
 		window.write("\"I sent a distress signal through the quantum barrier, and somehow you saw it.\"");
 		answer = Action.waitForAnswer();
-		window.write("\"I need your help to guide my decisions.\"");
-		answer = Action.waitForAnswer();
-		window.write("\"Here, I'll connect my vision to your screen...\"");
+		window.write("\"I need your help to guide me. Here, I'll conncect my vision to your screen...\"");
 		answer = Action.waitForAnswer();
 		window.setBackground("assets/wasteland.jpg");
 		window.write("\"Okay. These are the Wastes.\"");
 		answer = Action.waitForAnswer();
 		window.write("\"This is what's left of the world's greatest cities.\"");
 		answer = Action.waitForAnswer();
-		window.write("\"I am glad you are here.\"");
-		answer = Action.waitForAnswer();
-		window.write("\"Shhh, I can hear some conquerors.\"");
+		window.write("\"I am glad you are here... shh! I can hear some conquerors.\"");
 		answer = Action.waitForAnswer();
 		window.write("\"Help me out... I'm gonna need your advice.\"");
 		answer = Action.waitForAnswer();
@@ -87,23 +83,17 @@ public class ChoiceSystem {
 		answer = Action.waitForAnswer();
 		window.write("\"Our version of Earth used to be a lot like yours.\"");
 		answer = Action.waitForAnswer();
-		window.write("\"A few years ago, some scientists discovered how to traverse quantum plains.\"");
+		window.write("\"A few years ago, we discovered how to communicate with other universes.\"");
 		answer = Action.waitForAnswer();
-		window.write("\"This allowed us to communicate with other universes.\"");
-		answer = Action.waitForAnswer();
-		window.write("\"Unfortunately, some aliens managed to intercept our quantum signaling.\"");
-		answer = Action.waitForAnswer();
-		window.write("\"They triangulated Earth's location and came to conquer us.\"");
+		window.write("\"But then, some hostile aliens intercepted our signaling and invaded.\"");
 		answer = Action.waitForAnswer();
 		window.write("\"Ever since the aliens came, humanity has split.\"");
 		answer = Action.waitForAnswer();
-		window.write("\"Some of us are governors. They're rich and powerful, but are hated.\"");
-		answer = Action.waitForAnswer();
-		window.write("\"The rest of us accepted our fate as scavengers.\"");
+		window.write("\"Some of us are governors - hated, rich, and powerful. Others scavenge.\"");
 		answer = Action.waitForAnswer();
 		window.write("\"I've stayed out of the city, so I've been avoiding both clans...\"");
 		answer = Action.waitForAnswer();
-		window.write("\"...but it's probably time for me to choose one.\"");
+		window.write("\"...but its probably time for me to choose one.\"");
 		answer = Action.waitForAnswer();
 		window.setBackground("assets/city1.jpg");
 		window.write("\"Ah, look! We've made it to the city.\"");
@@ -150,7 +140,7 @@ public class ChoiceSystem {
 		window.addButton(">");
 		window.write("\"Awesome!\"");
 		answer = Action.waitForAnswer();
-		window.write("\"The election will take some time, but the quantum universe is weird.\"");
+		window.write("\"The election will take some time, but the quantum universe is... strange.\"");
 		answer = Action.waitForAnswer();
 		window.write("\"We can manipulate time in our communication.\"");
 		answer = Action.waitForAnswer();
@@ -436,7 +426,7 @@ public class ChoiceSystem {
 		String answer = Action.waitForAnswer();
 		window.write("\"...wait... did you hear that?\"");
 		answer = Action.waitForAnswer();
-		window.write("\"I think there’s an alien nearby...\"");
+		window.write("\"I think thereï¿½s an alien nearby...\"");
 		answer = Action.waitForAnswer();
 		window.write("ALIEN: \"Who is there?\"");
 		answer = Action.waitForAnswer();
@@ -476,7 +466,7 @@ public class ChoiceSystem {
 		answer = Action.waitForAnswer();
 		window.write("\"...holy cow, am I in space? Woah.\"");
 		answer = Action.waitForAnswer();
-		window.write("\"I’m not sure if this is the best idea...\"");
+		window.write("\"Iï¿½m not sure if this is the best idea...\"");
 		answer = Action.waitForAnswer();
 		choice("\"Should I find an escape pod, or find a hiding spot?\"", "Escape Pod", "Hiding Spot");
 		if (answer.equals("Escape Pod")) {
@@ -491,11 +481,11 @@ public class ChoiceSystem {
 		window.addButton(">");
 		window.write("\"I hope this is a good enough hiding spot.\"");
 		String answer = Action.waitForAnswer();
-		window.write("ALIEN: \"I smell human scum... you can’t hide from us!!\"");
+		window.write("ALIEN: \"I smell human scum... you canï¿½t hide from us!!\"");
 		answer = Action.waitForAnswer();
 		window.write("ALIEN: \"Ha, I can smell you!\"");
 		answer = Action.waitForAnswer();
-		window.write("ALIEN: \"You’re going to the brig like the rest of your like!\"");
+		window.write("ALIEN: \"Youï¿½re going to the brig like the rest of your like!\"");
 		answer = Action.waitForAnswer();
 		arenaChoice();
 	}
@@ -505,14 +495,14 @@ public class ChoiceSystem {
 		window.addButton(">");
 		window.write("\"Aha, I think this is an escape pod! Perfect.\"");
 		answer = Action.waitForAnswer();
-		window.write("\"Let’s see here... this button looks like a planet!\"");
+		window.write("\"Letï¿½s see here... this button looks like a planet!\"");
 		answer = Action.waitForAnswer();
 		window.setBackground("assets/controls5.jpg");
 		window.write("-- Beep! Setting course for plsdksjdhflkjwn-- -- --");
 		answer = Action.waitForAnswer();
 		window.write("ERROR ERROR ERROR EROROREO REOERREEROER-----");
 		answer = Action.waitForAnswer();
-		window.write("\"OH NO, what’s happening?! I think it’s-\"");
+		window.write("\"OH NO, whatï¿½s happening?! I think itï¿½s-\"");
 		answer = Action.waitForAnswer();
 		window.write("-- LAUNCHING POD --");
 		answer = Action.waitForAnswer();
@@ -552,7 +542,7 @@ public class ChoiceSystem {
    
 	public static void end3() {
 		window.addButton(">");
-		window.write("\"You’re right. Maybe humanity deserves this, anyways.\"");
+		window.write("\"Youï¿½re right. Maybe humanity deserves this, anyways.\"");
 		answer = Action.waitForAnswer();
 		window.write("\"I think... I think this is good.\"");
 		answer = Action.waitForAnswer();
@@ -573,9 +563,9 @@ public class ChoiceSystem {
    
 	public static void travel() {
 		window.addButton(">");
-		window.write("\"You’re right, I have to return to save them. It’s only fair.\"");
+		window.write("\"Youï¿½re right, I have to return to save them. Itï¿½s only fair.\"");
 		answer = Action.waitForAnswer();
-		window.write("\"Let’s try to get this escape pod to actually work this time...\"");
+		window.write("\"Letï¿½s try to get this escape pod to actually work this time...\"");
 		answer = Action.waitForAnswer();
 		window.write("\"Cool, it seems to be intact.\"");
 		answer = Action.waitForAnswer();
@@ -598,7 +588,7 @@ public class ChoiceSystem {
 		answer = Action.waitForAnswer();
 		window.write("\"Looks like we landed right in front of the city.\"");
 		answer = Action.waitForAnswer();
-		window.write("\"Let’s go inside!!\"");
+		window.write("\"Letï¿½s go inside!!\"");
 		answer = Action.waitForAnswer();
 		city2();
 	}
@@ -610,15 +600,15 @@ public class ChoiceSystem {
       window.setForeground("assets/guard.png", 15, 175, 620, 350);
 		window.write("ALIEN: \"Here we are, wimpy human.\"");
 		answer = Action.waitForAnswer();
-		window.write("ALIEN: \"Just because I’m nice, I’ll give you a choice.\"");
+		window.write("ALIEN: \"Just because Iï¿½m nice, Iï¿½ll give you a choice.\"");
 		answer = Action.waitForAnswer();
-		window.write("ALIEN: \"Normally we’d send you straight to the arena...\"");
+		window.write("ALIEN: \"Normally weï¿½d send you straight to the arena...\"");
 		answer = Action.waitForAnswer();
-		window.write("ALIEN: \"But if you really want, I’ll be nice...\"");
+		window.write("ALIEN: \"But if you really want, Iï¿½ll be nice...\"");
 		answer = Action.waitForAnswer();
 		window.write("ALIEN: \"...and let you work in the trash compactor instead!\"");
 		answer = Action.waitForAnswer();
-		choice("ALIEN: \"What’ll it be?\"", "Fight", "Work");
+		choice("ALIEN: \"Whatï¿½ll it be?\"", "Fight", "Work");
 		if (answer.equals("Fight")) {
 			arena();
 		} else if (answer.equals("Work")) {
@@ -642,7 +632,7 @@ public class ChoiceSystem {
 		answer = Action.waitForAnswer();
 		window.write("\"NOOOOOOOOOOO!!!!!!\"");
 		answer = Action.waitForAnswer();
-		window.write("\"I can’t believe you would lead me here, player.\"");
+		window.write("\"I canï¿½t believe you would lead me here, player.\"");
 		answer = Action.waitForAnswer();
 		window.write("\"I should never have trusted y-\"");
 		answer = Action.waitForAnswer();
@@ -745,7 +735,7 @@ public class ChoiceSystem {
       window.write("SCAVENGERS: \"So, will you join us?\"");
       answer = Action.waitForAnswer();
 		
-		window.write("REBEL LEADER: \"Or don’t join them... join us. We want to stop the conqueors.\"");
+		window.write("REBEL LEADER: \"Or donï¿½t join them... join us. We want to stop the conqueors.\"");
 		window.setForeground("assets/rebel-leader.png", 160, 200, 330, 420);
 		answer = Action.waitForAnswer();
 		choice("\"What should I do, do I hide or do I rebel?\"", "Hide", "Rebel");
@@ -773,7 +763,7 @@ public class ChoiceSystem {
 		answer = Action.waitForAnswer();
 		window.write("\"Thanks for your help, now I am going to go get one of those drinks over there.\"");
 		answer = Action.waitForAnswer();
-		window.write("—-System Offline-—");
+		window.write("ï¿½-System Offline-ï¿½");
       window.setBackground("assets/static.jpg");
 		answer = Action.waitForAnswer();
 		window.deleteButton(">");
@@ -793,7 +783,7 @@ public class ChoiceSystem {
 		window.write("\"Holy cow, what is this place?!\"");
 		answer = Action.waitForAnswer();
 		window.setForeground("assets/guard.png", 15, 175, 620, 350);
-		window.write("ALIEN GUARD: \"Hey you there, you’re up next.\"");
+		window.write("ALIEN GUARD: \"Hey you there, youï¿½re up next.\"");
 		answer = Action.waitForAnswer();
 		window.write("\"What?! No, hey, let go of me!\"");
 		answer = Action.waitForAnswer();
@@ -838,7 +828,7 @@ public class ChoiceSystem {
 		answer = Action.waitForAnswer();
 		window.write("\"Where are we going?\"");
 		answer = Action.waitForAnswer();
-		window.write("REBEL LEADER: \"We are going to conquer the conquerors’ world.\"");
+		window.write("REBEL LEADER: \"We are going to conquer the conquerorsï¿½ world.\"");
 		answer = Action.waitForAnswer();
 		window.write("REBEL LEADER: \"One more thing, I have a very important question for you.\"");
 		answer = Action.waitForAnswer();
@@ -1044,7 +1034,7 @@ public class ChoiceSystem {
 		window.addButton(">");
 		window.write("...*After a long journey across the galaxy*...");
 		answer = Action.waitForAnswer();
-		window.write("REBEL LEADER: \"Welcome to the conquerors world. Let’s get to work.\"");
+		window.write("REBEL LEADER: \"Welcome to the conquerors world. Letï¿½s get to work.\"");
 		answer = Action.waitForAnswer();
 		window.write("\"Yes, lets do it. Mwahahahaha!!\"");
 		answer = Action.waitForAnswer();
